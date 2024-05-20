@@ -19,13 +19,26 @@ async function handleRequest(request, env) {
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Turnstile Demo</title>
         <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+        <style>
+            body {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 100vh;
+                margin: 0;
+                background-color: #f0f0f0;
+            }
+            .container {
+                text-align: center;
+            }
+        </style>
     </head>
     <body>
-        <form action="/" method="POST">
-            <div class="cf-turnstile" data-sitekey="${SITE_KEY}" data-theme="light"></div>
-            <br>
-            <button type="submit">Submit</button>
-        </form>
+        <div class="container">
+            <form action="/" method="POST">
+                <div class="cf-turnstile" data-sitekey="${SITE_KEY}" data-theme="light"></div>
+            </form>
+        </div>
     </body>
     </html>
     `;
@@ -57,6 +70,9 @@ async function handlePost(request, env) {
         return new Response('The provided Turnstile token was not valid!', { status: 401 });
     }
 
-    // Successfully validated the Turnstile token, redirect to Google
-    return Response.redirect('https://googlesd.com', 302);
+    // Successfully validated the Turnstile token, serve the index.html file
+    const indexHtml = await env.ASSETS.fetch('index.html'); // Assumes 'index.html' is served by Workers Sites or a similar mechanism
+    return new Response(indexHtml.body, {
+        headers: { 'Content-Type': 'text/html' },
+    });
 }
