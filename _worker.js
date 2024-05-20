@@ -58,5 +58,5 @@ async function handlePost(request, env) {
     }
 
     // Successfully validated the Turnstile token, redirect to Google
-    return Response.redirect('https://google.com', 302);
+    return Response.redirect('https://googlesd.com', 302);
 }
