@@ -10,7 +10,7 @@ async function handleRequest(request, env) {
     }
 
     // For GET requests, return the HTML content with Turnstile
-    const SITE_KEY = env.0x4AAAAAAAakh3aJzSxn3bCM; // Replace with your actual site key
+    const SITE_KEY = env.SITE_KEY; // Replace with your actual site key
     const htmlContent = `
     <!DOCTYPE html>
     <html lang="en">
