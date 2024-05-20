@@ -71,8 +71,15 @@ async function handlePost(request, env) {
     }
 
     // Successfully validated the Turnstile token, serve the index.html file
-    const indexHtml = await env.ASSETS.fetch('index.html'); // Assumes 'index.html' is served by Workers Sites or a similar mechanism
-    return new Response(indexHtml.body, {
+    return fetchAsset('index.html', env);
+}
+
+async function fetchAsset(assetName, env) {
+    const assetResponse = await env.ASSETS.fetch(`https://${env.ASSETS_NAMESPACE}/${assetName}`);
+    if (!assetResponse.ok) {
+        return new Response('Asset not found', { status: 404 });
+    }
+    return new Response(assetResponse.body, {
         headers: { 'Content-Type': 'text/html' },
     });
 }
